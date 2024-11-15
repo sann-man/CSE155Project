@@ -1,0 +1,101 @@
+*{ 
+    margin: 0 auto; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white; 
+
+}
+
+body{ 
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+}
+
+/* --------------- Title ---------------*/
+
+.title{ 
+    margin-top: 20px; 
+    text-align: center;
+}
+
+
+/* --------------- Input selection -------------- */
+.emotion-selection{ 
+    position: fixed; 
+    top: 20%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}
+
+.emotion-selection form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 300px;
+    margin: auto;
+}
+
+.emotion-selection input[type="checkbox"] {
+    display: none;
+}
+
+.emotion-selection label {
+    display: block;
+    padding: 10px;
+    text-align: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 100px;
+    box-sizing: border-box;
+    color: black; 
+}
+
+.emotion-selection input[type="checkbox"]:checked + label {
+    background-color: #8ecae6;
+    color: #fff;
+    border-color: #0077b6;
+}
+
+
+
+/* --------------- music ---------------*/
+.music{ 
+    border: 1px solid black; 
+    width: 30vh; 
+    height: 4.5vh; 
+    padding: 10px; 
+    position: fixed;
+    top: 40%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    background-color: white;
+    
+}
+
+.artist h3, p{ 
+    color: black; 
+}
+
+
+
+#artist-headshot{ 
+    border: 1px solid black; 
+    border-radius: 50%;
+    width: 2vh; 
+    height: 2vh; 
+    padding: 10px; 
+    float: right; 
+}
+
+.webcam{ 
+    border: 1px solid black; 
+    padding: 10px; 
+    width: 30vh;
+    height: 30vh;  
+    position: fixed;
+    top: 60%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}

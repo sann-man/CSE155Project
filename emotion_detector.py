@@ -1,4 +1,11 @@
 #  imports 
+# Launches Webcam and detects emotion
+
+# because certain emotions are only detected with dramatic expressions my plan 
+# is to only register expressions when they pass a certain threshold (excluing nuetral)
+
+
+
 
 import cv2
 from fer import FER
