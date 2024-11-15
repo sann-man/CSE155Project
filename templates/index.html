@@ -3,69 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="main.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <title>Emotion Music Player</title>
 </head>
 <body>
     <div class="title">
         <h1>Emotion Scanning App</h1>
     </div>
 
-    <div class="genre-secletion">
-        
+    <div class="genre-selection">
+        <!-- Genre selection will be populated by JavaScript -->
     </div>
-    
+
     <div class="emotion-selection">
-        <form action="">
+        <form id="emotionForm">
             <div>
                 <input type="checkbox" id="happy">
                 <label for="happy">Happy</label>
             </div>
-            
+
             <div>
                 <input type="checkbox" id="calm">
                 <label for="calm">Calm</label>
             </div>
-            
+
             <div>
                 <input type="checkbox" id="sad"> 
                 <label for="sad">Sad</label>
             </div>
-            
+
             <div>
                 <input type="checkbox" id="energized">
                 <label for="energized">Energized</label>
             </div>
-            
+
             <div>
                 <input type="checkbox" id="Motivated">
                 <label for="Motivated">Motivated</label>
             </div>
-            
+
             <div>
                 <input type="checkbox" id="focused">
                 <label for="focused">Focused</label>
             </div>
         </form>
     </div>
-    
 
     <div class="music">
         <div class="artist">
-            <span id = "artist-headshot"></span>
-            <h3 id = song>Song placeholder</h3>
-            <p id = "artist-name">placeholder</p>
+            <span id="artist-headshot"></span>
+            <h3 id="song">Song placeholder</h3>
+            <p id="artist-name">placeholder</p>
         </div>
         <div class="current-song">
-            <!-- include song title, artist and associated mood -->
-
+            <div id="music-controls">
+                <button id="prevBtn">Previous</button>
+                <button id="playPauseBtn">Play</button>
+                <button id="nextBtn">Next</button>
+            </div>
+            
         </div>
     </div>
 
     <div class="webcam">
-        <h3>Webcam placeholder</h3>
+        <div id="emotion-display">
+            Current Emotion: <span id="current-emotion">Detecting...</span>
+        </div>
+        <div class="webcam-container">
+            <img src="{{ url_for('video_feed') }}" id="webcam-feed">
+            <!-- <div class="emotion-stats" id="emotion-stats">
+                <!-Emotion statistics will be updated by JavaScript -->
+            </div> 
+        </div>
     </div>
 
-
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>

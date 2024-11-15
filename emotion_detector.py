@@ -5,6 +5,10 @@
 # is to only register expressions when they pass a certain threshold (excluing nuetral)
 
 
+# webacme is launched once user selects all required inputs
+    # required inputs - genre and mood
+
+# 
 
 
 import cv2
