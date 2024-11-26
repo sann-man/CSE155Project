@@ -1,82 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <title>Emotion Music Player</title>
+    <title>Emotion-based Music Selection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </head>
 <body>
-    <div class="title">
-        <h1>Emotion Scanning App</h1>
-    </div>
-
-    <div class="genre-selection">
-        <!-- Genre selection will be populated by JavaScript -->
-    </div>
-
-    <div class="emotion-selection">
-        <form id="emotionForm">
-            <div>
-                <input type="checkbox" id="happy">
-                <label for="happy">Happy</label>
+    <header>
+        <h1>Emotion-based Music Selection</h1>
+    </header>
+    <main>
+        <section class="selection-container">
+            <div class="selection-item">
+                <h2>Select an activity:</h2>
+                <select id="activity">
+                    <option value="work">Work</option>
+                    <option value="study">Study</option>
+                    <option value="exercise">Exercise</option>
+                    <option value="relax">Relax</option>
+                </select>
             </div>
-
-            <div>
-                <input type="checkbox" id="calm">
-                <label for="calm">Calm</label>
+            <div class="selection-item">
+                <h2>Select a genre:</h2>
+                <select id="genre">
+                    <option value="pop">Pop</option>
+                    <option value="rock">Rock</option>
+                    <option value="hiphop">Hip Hop</option>
+                    <option value="classical">Classical</option>
+                </select>
             </div>
-
-            <div>
-                <input type="checkbox" id="sad"> 
-                <label for="sad">Sad</label>
+            <div class="selection-item">
+                <h2>Select a mood:</h2>
+                <select id="mood">
+                    <option value="happy">Happy</option>
+                    <option value="sad">Sad</option>
+                    <option value="energetic">Energetic</option>
+                    <option value="calm">Calm</option>
+                </select>
             </div>
-
-            <div>
-                <input type="checkbox" id="energized">
-                <label for="energized">Energized</label>
+        </section>
+        <section class="action-container">
+            <button id="playButton">Play Music</button>
+            <div id="message"></div>
+        </section>
+        <section class="emotion-detection-container">
+            <h2>Emotion Detection</h2>
+            <div class="video-container">
+                <img src="{{ url_for('video_feed') }}" alt="Emotion Detection">
             </div>
-
-            <div>
-                <input type="checkbox" id="Motivated">
-                <label for="Motivated">Motivated</label>
-            </div>
-
-            <div>
-                <input type="checkbox" id="focused">
-                <label for="focused">Focused</label>
-            </div>
-        </form>
-    </div>
-
-    <div class="music">
-        <div class="artist">
-            <span id="artist-headshot"></span>
-            <h3 id="song">Song placeholder</h3>
-            <p id="artist-name">placeholder</p>
-        </div>
-        <div class="current-song">
-            <div id="music-controls">
-                <button id="prevBtn">Previous</button>
-                <button id="playPauseBtn">Play</button>
-                <button id="nextBtn">Next</button>
-            </div>
-            
-        </div>
-    </div>
-
-    <div class="webcam">
-        <div id="emotion-display">
-            Current Emotion: <span id="current-emotion">Detecting...</span>
-        </div>
-        <div class="webcam-container">
-            <img src="{{ url_for('video_feed') }}" id="webcam-feed">
-            <!-- <div class="emotion-stats" id="emotion-stats">
-                <!-Emotion statistics will be updated by JavaScript -->
-            </div> 
-        </div>
-    </div>
-
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+        </section>
+    </main>
+    
 </body>
 </html>
