@@ -11,12 +11,12 @@ app = Flask(__name__,
             static_folder='static',
             template_folder='templates')
 
-# Initialize the FER emotion detector
+# initialize the FER emotion detector
 detector = FER(mtcnn=True)
 
-# Spotify configuration
-SPOTIFY_CLIENT_ID = 'a41d0355f65c4ac794e7cb098321585c'  # Replace with your Spotify Client ID
-SPOTIFY_CLIENT_SECRET = '7f97e47faffc43b391d3fa38ee6dc3c2'  # Replace with your Spotify Client Secret
+# spotify configuration stuff
+SPOTIFY_CLIENT_ID = 'a41d0355f65c4ac794e7cb098321585c' 
+SPOTIFY_CLIENT_SECRET = '7f97e47faffc43b391d3fa38ee6dc3c2'  
 SPOTIFY_REDIRECT_URI = 'http://localhost:5000/callback'
 
 scope = 'user-read-playback-state user-modify-playback-state playlist-read-private playlist-modify-public'
@@ -26,14 +26,17 @@ spotify_auth = SpotifyOAuth(client_id=SPOTIFY_CLIENT_ID,
                             scope=scope)
 spotify = Spotify(auth_manager=spotify_auth)
 
-# Global variables
+# variables 
 camera = None
 last_emotion = "No emotion detected"
 frame_counter = 0
 lock = threading.Lock()
 
+
+# --------- WEB AND FER implementation ------------
+# get camera 
 def get_camera():
-    """Get or create camera instance"""
+    # get or create camera instance
     global camera
     if camera is None:
         camera = cv2.VideoCapture(0)  # 0 is usually the built-in webcam
@@ -41,8 +44,9 @@ def get_camera():
             raise RuntimeError("Unable to access the camera.")
     return camera
 
+# process frames 
 def process_frame():
-    """Get a frame from the camera and process it"""
+    # Get a frame from the camera and process it
     global frame_counter, last_emotion
     camera = get_camera()
     success, frame = camera.read()
@@ -64,7 +68,7 @@ def process_frame():
                     with lock:
                         last_emotion = strongest_emotion
 
-                    # Draw the emotion text on the frame
+                    # draw the emotion text on the frame
                     cv2.putText(frame, 
                                 f"Emotion: {strongest_emotion}", 
                                 (10, 30), 
@@ -75,7 +79,7 @@ def process_frame():
             except Exception as e:
                 print(f"Error detecting emotions: {e}")
 
-        # Encode the frame to JPEG
+        # encode the frame to JPEG
         _, buffer = cv2.imencode('.jpg', frame)
         frame_bytes = buffer.tobytes()
         return frame_bytes
@@ -88,39 +92,41 @@ def generate_frames():
         if frame_bytes:
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-        time.sleep(0.1)  # Small delay to reduce CPU usage
+        time.sleep(0.1)  # helps with CPU usage
 
 @app.route('/')
 def home():
-    """Home page route"""
+    # home page route 
     return render_template('index.html')
 
 @app.route('/video_feed')
 def video_feed():
-    """Video feed route"""
+    # vide feed route 
     return Response(generate_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/get_emotion')
 def get_emotion():
-    """Get the current emotion"""
+    # get current emotion
     with lock:
         return jsonify({'emotion': last_emotion})
 
 @app.route('/callback')
 def callback():
-    """Spotify authentication callback"""
+    # authetnication for spotify 
     code = request.args.get('code')
     token_info = spotify_auth.get_access_token(code)
     return "Spotify authentication successful. You can return to the app."
 
+# add more to playlist
+# add functionality to stop certain playlist from appearing in same setting...
+
 playlist_dict = {
     ('study', 'pop', 'happy'): 'spotify:playlist:37i9dQZF1DWSoyxGghlqv5',
-    # Add more combinations and their corresponding playlist URIs
 }
 
 def create_playlist(activity, genre, mood):
-    """Fetch a playlist based on activity, genre, and mood from a predefined dictionary"""
+    # get a playlist based on activity genre and mood from a predefined dictionay
     # Check predefined dictionary first
     playlist_uri = playlist_dict.get((activity, genre, mood))
     
@@ -139,7 +145,7 @@ def create_playlist(activity, genre, mood):
 
 @app.route('/play_music', methods=['GET'])
 def play_music():
-    """Play music based on the selected activity, genre, and mood."""
+    # Play music based on the selected items 
     activity = request.args.get('activity')
     genre = request.args.get('genre')
     mood = request.args.get('mood')
@@ -148,14 +154,18 @@ def play_music():
 
     if isinstance(playlist_result, list):
         # Pick a random playlist from the list
+
         playlist_name, playlist_uri = random.choice(playlist_result)
     elif playlist_result:
         # If it's a single playlist, just use it
+
         playlist_uri = playlist_result
         playlist_name = 'Selected playlist'  # You can update this with a more appropriate value if needed
 
     if playlist_uri:
+
         # Start playing the playlist
+
         devices = spotify.devices()
         if devices['devices']:
             spotify.start_playback(device_id=devices['devices'][0]['id'], context_uri=playlist_uri)
@@ -169,7 +179,7 @@ def play_music():
 
 @app.route('/pause_music', methods=['POST'])
 def pause_music():
-    """Pause currently playing music"""
+    # Pause currently playing music
     try:
         spotify.pause_playback()
         return jsonify({'message': 'Playback paused successfully.'})
@@ -178,8 +188,7 @@ def pause_music():
 
 
 @app.route('/resume_music', methods=['POST'])
-def resume_music():
-    """Resume currently paused music"""
+def resume_music(): 
     try:
         spotify.start_playback()
         return jsonify({'message': 'Playback resumed successfully.'})
@@ -189,7 +198,6 @@ def resume_music():
 
 @app.route('/next_track', methods=['POST'])
 def next_track():
-    """Skip to the next track"""
     try:
         spotify.next_track()
         return jsonify({'message': 'Skipped to the next track.'})
@@ -198,14 +206,14 @@ def next_track():
     
 @app.route('/current_song', methods=['GET'])
 def current_song():
-    """Get details of the currently playing song"""
+    # get details of the currently playing song
     try:
         current_playback = spotify.current_playback()
         if current_playback and current_playback['item']:
             track = current_playback['item']
             track_name = track['name']
             artists = ', '.join(artist['name'] for artist in track['artists'])
-            album_image_url = track['album']['images'][0]['url']  # Get the album image URL
+            album_image_url = track['album']['images'][0]['url']  # get the album image URL
             is_playing = current_playback['is_playing']
 
             return jsonify({

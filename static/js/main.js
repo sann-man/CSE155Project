@@ -38,20 +38,12 @@ function getCurrentSong() {
         .then(response => response.json())
         .then(data => {
             if (data.track_name && data.artists && data.album_image_url) {
-                let songStatus = '';
-
-                if (data.is_playing) {
-                    songStatus = `${data.track_name} by ${data.artists}`;
-                } else {
-                    songStatus = `Song: ${data.track_name} by ${data.artists} is paused`;
-                }
-
-                document.getElementById('song-info').innerText = songStatus;
+                document.getElementById('song-info').innerText = `${data.track_name} by ${data.artists}`;
                 document.getElementById('album-image').src = data.album_image_url;
                 document.getElementById('album-image').style.display = 'block';
             } else if (data.message) {
+                // If there's no current playback but we have previously playing track info
                 document.getElementById('song-info').innerText = 'No song is currently playing.';
-                document.getElementById('album-image').style.display = 'none';
             }
         })
         .catch(error => {
@@ -60,7 +52,7 @@ function getCurrentSong() {
 }
 
 // Automatically refresh the current song every 2 seconds for a faster update
-setInterval(getCurrentSong, 2000);
+setInterval(getCurrentSong, 1000);
 
 // Run the function once initially to load song info immediately when the page is loaded
 getCurrentSong();
