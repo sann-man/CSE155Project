@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Response, request, jsonify
 import cv2
+import random
 from fer import FER
 import time
 import threading
@@ -138,21 +139,22 @@ def create_playlist(activity, genre, mood):
 
 @app.route('/play_music', methods=['GET'])
 def play_music():
-    """Play music based on the selected activity, genre, and mood"""
+    """Play music based on the selected activity, genre, and mood."""
     activity = request.args.get('activity')
     genre = request.args.get('genre')
     mood = request.args.get('mood')
 
     playlist_result = create_playlist(activity, genre, mood)
 
-    if playlist_result:
-        if isinstance(playlist_result, list):
-            # Multiple playlists found - pick the first one or return a choice to user
-            playlist_name, playlist_uri = playlist_result[0]  # You could implement a user choice here
-        else:
-            # Single playlist found in the dictionary
-            playlist_uri = playlist_result
-        
+    if isinstance(playlist_result, list):
+        # Pick a random playlist from the list
+        playlist_name, playlist_uri = random.choice(playlist_result)
+    elif playlist_result:
+        # If it's a single playlist, just use it
+        playlist_uri = playlist_result
+        playlist_name = 'Selected playlist'  # You can update this with a more appropriate value if needed
+
+    if playlist_uri:
         # Start playing the playlist
         devices = spotify.devices()
         if devices['devices']:
@@ -162,6 +164,60 @@ def play_music():
             return jsonify({'message': "No device available."})
     else:
         return jsonify({'message': "No playlist found matching the given criteria."})
+
+    
+
+@app.route('/pause_music', methods=['POST'])
+def pause_music():
+    """Pause currently playing music"""
+    try:
+        spotify.pause_playback()
+        return jsonify({'message': 'Playback paused successfully.'})
+    except Exception as e:
+        return jsonify({'error': f"Unable to pause playback: {e}"})
+
+
+@app.route('/resume_music', methods=['POST'])
+def resume_music():
+    """Resume currently paused music"""
+    try:
+        spotify.start_playback()
+        return jsonify({'message': 'Playback resumed successfully.'})
+    except Exception as e:
+        return jsonify({'error': f"Unable to resume playback: {e}"})
+
+
+@app.route('/next_track', methods=['POST'])
+def next_track():
+    """Skip to the next track"""
+    try:
+        spotify.next_track()
+        return jsonify({'message': 'Skipped to the next track.'})
+    except Exception as e:
+        return jsonify({'error': f"Unable to skip to the next track: {e}"})
+    
+@app.route('/current_song', methods=['GET'])
+def current_song():
+    """Get details of the currently playing song"""
+    try:
+        current_playback = spotify.current_playback()
+        if current_playback and current_playback['item']:
+            track = current_playback['item']
+            track_name = track['name']
+            artists = ', '.join(artist['name'] for artist in track['artists'])
+            album_image_url = track['album']['images'][0]['url']  # Get the album image URL
+            is_playing = current_playback['is_playing']
+
+            return jsonify({
+                'track_name': track_name,
+                'artists': artists,
+                'album_image_url': album_image_url,
+                'is_playing': is_playing
+            })
+        else:
+            return jsonify({'message': 'No song is currently playing.'})
+    except Exception as e:
+        return jsonify({'error': f"Unable to get current song: {e}"})
 
 
 if __name__ == '__main__':

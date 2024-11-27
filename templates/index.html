@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Emotion-based Music Selection</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </head>
@@ -11,6 +11,13 @@
         <h1>Emotion-based Music Selection</h1>
     </header>
     <main>
+
+        <div id="current-song">
+            <h3>Currently Playing:</h3>
+            <p id="song-info">No song is playing.</p>
+            <img id="album-image" src="" alt="Album Image" style="width: 300px; display: none;">
+        </div>
+
         <section class="selection-container">
             <div class="selection-item">
                 <h2>Select an activity:</h2>
@@ -52,5 +59,8 @@
         </section>
     </main>
     
+    <button onclick="pauseMusic()">Pause</button>
+    <button onclick="resumeMusic()">Resume</button>
+    <button onclick="nextTrack()">Next</button>
 </body>
 </html>
