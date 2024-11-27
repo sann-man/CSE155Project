@@ -39,7 +39,7 @@ def get_camera():
     # get or create camera instance
     global camera
     if camera is None:
-        camera = cv2.VideoCapture(0)  # 0 is usually the built-in webcam
+        camera = cv2.VideoCapture(0)  # 0 for built in webcam 
         if not camera.isOpened():
             raise RuntimeError("Unable to access the camera.")
     return camera
@@ -135,7 +135,7 @@ def create_playlist(activity, genre, mood):
     else:
         # Search Spotify with the given combination
         playlist_name = f"{activity} {genre} {mood}"
-        results = spotify.search(q=playlist_name, type='playlist', limit=5)  # Get up to 5 playlists for variety
+        results = spotify.search(q=playlist_name, type='playlist', limit=5)  #playlist amount 
         if results['playlists']['items']:
             # Return a list of URIs and names for better selection
             playlists = [(item['name'], item['uri']) for item in results['playlists']['items']]
@@ -160,7 +160,7 @@ def play_music():
         # If it's a single playlist, just use it
 
         playlist_uri = playlist_result
-        playlist_name = 'Selected playlist'  # You can update this with a more appropriate value if needed
+        playlist_name = 'Selected playlist'  
 
     if playlist_uri:
 
