@@ -1,5 +1,6 @@
 # data_config.py
 
+
 import pandas as pd
 
 def get_training_data():

@@ -4,15 +4,13 @@
     <title>Emotion-based Music Selection</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
 </head>
 <body>
     <header>
         <h1>Emotion-based Music Selection</h1>
     </header>
     <main>
-
-        
 
         <select id="activity">
             <option value="study">Study</option>
@@ -82,7 +80,6 @@
         <button onclick="resumeMusic()">Resume</button>
         <button onclick="nextTrack()">Next</button>
     
-        <!-- Add this after your current-song div -->
         <div class="feedback-container">
             <h3>How's this playlist working for you?</h3>
             <button onclick="submitFeedback(1)" class="feedback-btn positive">👍 Great Choice</button>
@@ -90,9 +87,6 @@
             <p id="feedback-message" style="display: none;"></p>
         </div>
     </div>
-
-
-    <!-- Add this section to your index.html, after the current-song div -->
 
     
 </body>
