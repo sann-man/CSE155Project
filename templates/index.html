@@ -12,41 +12,30 @@
     </header>
     <main>
 
-        <div id="current-song">
-            <h3>Currently Playing:</h3>
-            <p id="song-info">No song is playing.</p>
-            <img id="album-image" src="" alt="Album Image" style="width: 300px; display: none;">
-        </div>
+        
 
-        <section class="selection-container">
-            <div class="selection-item">
-                <h2>Select an activity:</h2>
-                <select id="activity">
-                    <option value="work">Work</option>
-                    <option value="study">Study</option>
-                    <option value="exercise">Exercise</option>
-                    <option value="relax">Relax</option>
-                </select>
-            </div>
-            <div class="selection-item">
-                <h2>Select a genre:</h2>
-                <select id="genre">
-                    <option value="pop">Pop</option>
-                    <option value="rock">Rock</option>
-                    <option value="hiphop">Hip Hop</option>
-                    <option value="classical">Classical</option>
-                </select>
-            </div>
-            <div class="selection-item">
-                <h2>Select a mood:</h2>
-                <select id="mood">
-                    <option value="happy">Happy</option>
-                    <option value="sad">Sad</option>
-                    <option value="energetic">Energetic</option>
-                    <option value="calm">Calm</option>
-                </select>
-            </div>
-        </section>
+        <select id="activity">
+            <option value="study">Study</option>
+            <option value="work">Work</option>
+            <option value="exercise">Exercise</option>
+            <option value="relax">Relax</option>
+        </select>
+        
+        <select id="genre">
+            <option value="classical">Classical</option>
+            <option value="pop">Pop</option>
+            <option value="rock">Rock</option>
+            <option value="ambient">Ambient</option>
+            <option value="electronic">Electronic</option>
+            <option value="hiphop">Hip Hop</option>
+        </select>
+        
+        <select id="mood">
+            <option value="focus">Focus</option>
+            <option value="happy">Happy</option>
+            <option value="energetic">Energetic</option>
+            <option value="calm">Calm</option>
+        </select>
         <section class="action-container">
             <button id="playButton">Play Music</button>
             <div id="message"></div>
@@ -58,9 +47,53 @@
             </div>
         </section>
     </main>
+
+    <div class="playlists-container">
+        <div class="current-playlist">
+            <h3>Current Playlist</h3>
+            <div id="current-playlist-info">
+                <img id="current-playlist-image" src="" alt="Current Playlist" style="width: 200px; display: none;">
+                <p id="current-playlist-name"></p>
+                <p id="current-playlist-description" class="playlist-description"></p>
+            </div>
+        </div>
+        
+        <div class="suggested-playlist" style="display: none;">
+            <h3>Suggested Playlist</h3>
+            <div id="suggested-playlist-info">
+                <img id="suggested-playlist-image" src="" alt="Suggested Playlist" style="width: 200px; display: none;">
+                <p id="suggested-playlist-name"></p>
+                <p id="suggested-playlist-description" class="playlist-description"></p>
+            </div>
+            <button id="switch-playlist-button" onclick="switchToSuggestedPlaylist()" style="display: none;">
+                Switch to This Playlist
+            </button>
+        </div>
+    </div>
+
+    <div class="music">
+        <div id="current-song">
+            <h3>Currently Playing:</h3>
+            <p id="song-info">No song is playing.</p>
+            <img id="album-image" src="" alt="Album Image" style="width: 300px; display: none;">
+        </div>
     
-    <button onclick="pauseMusic()">Pause</button>
-    <button onclick="resumeMusic()">Resume</button>
-    <button onclick="nextTrack()">Next</button>
+        <button onclick="pauseMusic()">Pause</button>
+        <button onclick="resumeMusic()">Resume</button>
+        <button onclick="nextTrack()">Next</button>
+    
+        <!-- Add this after your current-song div -->
+        <div class="feedback-container">
+            <h3>How's this playlist working for you?</h3>
+            <button onclick="submitFeedback(1)" class="feedback-btn positive">👍 Great Choice</button>
+            <button onclick="submitFeedback(-1)" class="feedback-btn negative">👎 Not Working</button>
+            <p id="feedback-message" style="display: none;"></p>
+        </div>
+    </div>
+
+
+    <!-- Add this section to your index.html, after the current-song div -->
+
+    
 </body>
 </html>
