@@ -17,11 +17,16 @@ class EmotionDetector:
         self.detector = FER(mtcnn=True)
 
     def get_camera(self):
-        # initialize or get existing camera instance
         if self.camera is None:
-            self.camera = cv2.VideoCapture(0)
-            if not self.camera.isOpened():
-                raise RuntimeError("Unable to access the camera.")
+            # try different camera indexes
+            for index in range(4):  # try first 4 camera indexes
+                self.camera = cv2.VideoCapture(index)
+                if self.camera.isOpened():
+                    print(f"Successfully connected to camera {index}")
+                    return self.camera
+                self.camera.release()
+                
+            raise RuntimeError("No accessible camera found. Check camera connection and permissions")
         return self.camera
 
     def process_frame(self):

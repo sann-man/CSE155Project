@@ -8,14 +8,14 @@
 </head>
 <body>
     <header>
-        <h1>Emotion-based Music Selection</h1>
+        <h1>Emoticon</h1>
     </header>
     <main>
 
         <select id="activity">
             <option value="study">Study</option>
             <option value="work">Work</option>
-            <option value="exercise">Exercise</option>
+            <!-- <option value="exercise">Exercise</option> -->
             <option value="relax">Relax</option>
         </select>
         
@@ -34,6 +34,8 @@
             <option value="energetic">Energetic</option>
             <option value="calm">Calm</option>
         </select>
+    </main>
+
         <section class="action-container">
             <button id="playButton">Play Music</button>
             <div id="message"></div>
@@ -44,36 +46,12 @@
                 <img src="{{ url_for('video_feed') }}" alt="Emotion Detection">
             </div>
         </section>
-    </main>
-
-    <div class="playlists-container">
-        <div class="current-playlist">
-            <h3>Current Playlist</h3>
-            <div id="current-playlist-info">
-                <img id="current-playlist-image" src="" alt="Current Playlist" style="width: 200px; display: none;">
-                <p id="current-playlist-name"></p>
-                <p id="current-playlist-description" class="playlist-description"></p>
-            </div>
-        </div>
-        
-        <div class="suggested-playlist" style="display: none;">
-            <h3>Suggested Playlist</h3>
-            <div id="suggested-playlist-info">
-                <img id="suggested-playlist-image" src="" alt="Suggested Playlist" style="width: 200px; display: none;">
-                <p id="suggested-playlist-name"></p>
-                <p id="suggested-playlist-description" class="playlist-description"></p>
-            </div>
-            <button id="switch-playlist-button" onclick="switchToSuggestedPlaylist()" style="display: none;">
-                Switch to This Playlist
-            </button>
-        </div>
-    </div>
 
     <div class="music">
         <div id="current-song">
             <h3>Currently Playing:</h3>
             <p id="song-info">No song is playing.</p>
-            <img id="album-image" src="" alt="Album Image" style="width: 300px; display: none;">
+            <img id="album-image" src="" alt="Album Image">
         </div>
     
         <button onclick="pauseMusic()">Pause</button>
