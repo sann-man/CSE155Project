@@ -10,6 +10,21 @@ window.resumeMusic = resumeMusic;
 window.nextTrack = nextTrack;
 window.submitFeedback = submitFeedback;
 
+// this gets everything started
+function initializePlaylistManagement() {
+    // set up the play button
+    setupMusicControls();
+    // update what song is playing every second
+    setInterval(updateCurrentSongDisplay, constants.EMOTION_DISPLAY_INTERVAL);
+ }
+ 
+ // when page loads start everything up
+ $(document).ready(function() {
+    initializePlaylistManagement();
+    // check emotion every 10 seconds
+    setInterval(checkEmotionAndUpdatePlaylist, constants.MOOD_CHECK_INTERVAL);
+ });
+
 // sets up what happens when user click the play button
 function setupMusicControls() {
    $('#playButton').click(function() {
@@ -19,6 +34,7 @@ function setupMusicControls() {
        const mood = $('#mood').val();
 
        // make sure they picked everything
+    //    got rid of message need to change to alert
        if (!activity || !genre || !mood) {
            $('#message').text('Please select all options first.');
            return;
@@ -29,7 +45,7 @@ function setupMusicControls() {
    });
 }
 
-// this checks ur emotion and maybe changes playlist if needed
+// this checks use emotion and maybe changes playlist if needed
 async function checkEmotionAndUpdatePlaylist() {
    // dont do anything if were already switching playlists
    if (state.isTransitioningPlaylist || !state.currentPlaylistUri) {
@@ -42,7 +58,7 @@ async function checkEmotionAndUpdatePlaylist() {
        return;
    }
 
-   try {
+   try { // was having problems with errors so used try 
        // get current mood and ask server about emotion
        const currentMood = $('#mood').val();
        const response = await fetch('/update_emotion', {
@@ -61,6 +77,7 @@ async function checkEmotionAndUpdatePlaylist() {
        // show the emotion on screen
        updateEmotionDisplay(data.current_emotion, currentMood);
 
+    //    once new playlist has been suggested 
        // check if we should change the playlist
        if (data.should_change && data.suggested_mood) {
            // ask user if they wanna change playlist
@@ -87,17 +104,3 @@ async function checkEmotionAndUpdatePlaylist() {
    }
 }
 
-// this gets everything started
-function initializePlaylistManagement() {
-   // set up the play button
-   setupMusicControls();
-   // update what song is playing every second
-   setInterval(updateCurrentSongDisplay, constants.EMOTION_DISPLAY_INTERVAL);
-}
-
-// when page loads start everything up
-$(document).ready(function() {
-   initializePlaylistManagement();
-   // check emotion every 10 seconds
-   setInterval(checkEmotionAndUpdatePlaylist, constants.MOOD_CHECK_INTERVAL);
-});

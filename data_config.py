@@ -1,13 +1,15 @@
 # data_config.py
+# training data for recomendation engine 
 
 
 import pandas as pd
 
 def get_training_data():
-    """Returns the training data for the recommendation engine"""
+    # Returns the training data for the recommendation engine
     initial_training_data = pd.DataFrame({
         'activity': [
             # Study combinations
+
             'study', 'study', 'study', 'study',
             'study', 'study', 'study', 'study',
             'study', 'study', 'study', 'study',
@@ -53,7 +55,7 @@ def get_training_data():
             'electronic', 'electronic', 'electronic', 'electronic',
             'hiphop', 'hiphop', 'hiphop', 'hiphop',
 
-            # Exercise genres (repeated pattern)
+            # Exercise genres 
             'classical', 'classical', 'classical', 'classical',
             'pop', 'pop', 'pop', 'pop',
             'rock', 'rock', 'rock', 'rock',
@@ -61,7 +63,7 @@ def get_training_data():
             'electronic', 'electronic', 'electronic', 'electronic',
             'hiphop', 'hiphop', 'hiphop', 'hiphop',
             
-            # Relax genres (repeated pattern)
+            # Relax genres
             'classical', 'classical', 'classical', 'classical',
             'pop', 'pop', 'pop', 'pop',
             'rock', 'rock', 'rock', 'rock',
@@ -70,7 +72,6 @@ def get_training_data():
             'hiphop', 'hiphop', 'hiphop', 'hiphop'
         ],
         'mood': [
-            # Repeated pattern for all activities
             'focus', 'happy', 'energetic', 'calm'
         ] * 24,  # Repeated for each activity-genre combination
         'emotion': [
@@ -78,7 +79,7 @@ def get_training_data():
             'neutral', 'happy', 'energetic', 'calm'
         ] * 24,  # Repeated for each activity-genre combination
         'playlist_uri': [
-            # All playlist URIs from your dictionary
+
             # Study playlist URIs
 
             'spotify:playlist:37i9dQZF1DX8NTLI2TtZa6', 'spotify:playlist:37i9dQZF1DWUoZLzF1EkPE', 'spotify:playlist:37i9dQZF1DWXRqgorJj26U', 'spotify:playlist:37i9dQZF1DX4sWSpwq3LiO',
@@ -103,7 +104,7 @@ def get_training_data():
             'spotify:playlist:37i9dQZF1DX3Ogo9pFvBkY', 'spotify:playlist:37i9dQZF1DX3rxVfibe1L0', 'spotify:playlist:37i9dQZF1DXd9H78TKNPf0', 'spotify:playlist:37i9dQZF1DX4H7FFUM2osB',
             'spotify:playlist:37i9dQZF1DX3GJ1Bd5dVQL', 'spotify:playlist:37i9dQZF1DX6GwdWRQMQpq', 'spotify:playlist:37i9dQZF1DX0HRj9P7NxeE', 'spotify:playlist:37i9dQZF1DX4sWSpwq3LiO',
             'spotify:playlist:37i9dQZF1DX76Wlfdnj7AP', 'spotify:playlist:37i9dQZF1DWXRqgorJj26U', 'spotify:playlist:37i9dQZF1DX0HRj9P7NxeE', 'spotify:playlist:37i9dQZF1DWZd79rJ6a7lp',
-            # Relax playlist URIs
+            # relax playlist URIs
 
             'spotify:playlist:37i9dQZF1DX8NTLI2TtZa6', 'spotify:playlist:37i9dQZF1DWUoZLzF1EkPE', 'spotify:playlist:37i9dQZF1DWXRqgorJj26U', 'spotify:playlist:37i9dQZF1DX4sWSpwq3LiO',
             'spotify:playlist:37i9dQZF1DX8NTLI2TtZa6', 'spotify:playlist:37i9dQZF1DX1BzILRveYHb', 'spotify:playlist:37i9dQZF1DX1FJijPQ3V4S', 'spotify:playlist:37i9dQZF1DX7gIoKXt0gmx',
@@ -116,7 +117,7 @@ def get_training_data():
     return initial_training_data
 
 def get_playlist_dict():
-    """Returns the playlist dictionary"""
+    # returns the playlist dictionary
     return {
         # Study
         ('study', 'classical', 'focus'): 'spotify:playlist:37i9dQZF1DX8NTLI2TtZa6',

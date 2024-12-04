@@ -1,6 +1,7 @@
 
 import random
 import time 
+# gets data from data_config.py
 
 def create_playlist(spotify, activity, genre, mood, current_playlist_uri=None):
    # try to find a good playlist based on user input
@@ -17,34 +18,37 @@ def create_playlist(spotify, activity, genre, mood, current_playlist_uri=None):
        predefined_uri = playlist_dict.get(playlist_key)
        if predefined_uri and predefined_uri != current_playlist_uri:
            try:
+               
                playlist_info = spotify.playlist(predefined_uri)
                playlists.append((playlist_info['name'], predefined_uri))
                print(f"Found predefined playlist: {playlist_info['name']}")
+
            except Exception as e:
-               print(f"oops couldnt get that playlist: {e}")
+               print(f"couldnt find a playlist that matches: {e}")
        
        # search spotify with these terms if we need to more playlists 
+    #    add other 2 cases becasue it enhances search capabilities 
        search_terms = [
            f"{activity} {genre} {mood}",
            f"{activity} {genre}",
            f"{genre} {mood}"
        ]
-       
        # add some extra search terms for workout playlists
-       if activity == 'exercise':
-           search_terms.extend([
-               f"workout {genre}",
-               f"gym {genre} {mood}"
-           ])
-           if genre == 'hiphop':
-               search_terms.extend([
-                   "workout rap",
-                   "gym hip hop"
-               ])
+    #    if activity == 'exercise':
+    #        search_terms.extend([
+    #            f"workout {genre}",
+    #            f"gym {genre} {mood}"
+    #        ])
+    #        if genre == 'hiphop':
+    #            search_terms.extend([
+    #                "workout rap",
+    #                "gym hip hop"
+    #            ])
        
        # look for more playlists on spotify
        for search_term in search_terms:
            try:
+            #    ApI call 
                results = spotify.search(
                    q=search_term + " playlist",
                    type='playlist',
@@ -59,12 +63,13 @@ def create_playlist(spotify, activity, genre, mood, current_playlist_uri=None):
                        # skip the playlist were already playing
                        if playlist_uri == current_playlist_uri:
                            continue
-                       # dont add same playlist twice
+                       # gets rid of duplicate playlist URIS 
                        if not any(uri == playlist_uri for _, uri in playlists):
                            playlists.append((item['name'], playlist_uri))
                            print(f"Found playlist: {item['name']}")
                            
                # stop looking if we got enough playlists
+            #    had to add this for some reason wasnt stoping at 5 
                if len(playlists) >= 5:
                    break
                    
@@ -91,7 +96,7 @@ def process_emotions(emotion_history, current_emotion, target_mood):
    # figure out if we should change the playlist based on user emotions
 #    used these mainly for debuging 
    print("\n=== checking emotions ===")
-   print(f"ur feeling: {current_emotion}")
+   print(f"your feeling: {current_emotion}")
    print(f"trying to feel: {target_mood}")
    
    # need at least 5 emotion readings before deciding
@@ -106,8 +111,8 @@ def process_emotions(emotion_history, current_emotion, target_mood):
        'happy': 'energetic',
        'sad': 'calm',
        'angry': 'energetic', 
-       'fearful': 'calm',
-       'fear': 'calm',
+       'fearful': 'energetic',
+       'fear': 'energetic',
        'disgusted': 'energetic',
        'surprised': 'energetic',
        'surprise': 'energetic', 
@@ -129,6 +134,7 @@ def process_emotions(emotion_history, current_emotion, target_mood):
    print(f"how many times each emotion showed up: {emotion_counts}")
    
    # figure out main / dominant emotion
+#    lmada is just another way to creeate a function 
    dominant_emotion = max(emotion_counts.items(), key=lambda x: x[1])[0]
    print(f"main emotion rn: {dominant_emotion}")
    
@@ -141,12 +147,12 @@ def process_emotions(emotion_history, current_emotion, target_mood):
    
    # decide if we should change playlist
    if current_energy and emotion_counts[dominant_emotion] >= 2:
-       
+    
+        # energy level differentiation 
        # if trying to be energetic but feeling calm
        if target_mood in high_energy_moods and current_energy == 'calm':
            suggested_mood = 'energetic'
            should_change = True
-
        # if trying to be calm but feeling energetic
        elif target_mood in low_energy_moods and current_energy == 'energetic':
            suggested_mood = target_mood
@@ -161,7 +167,7 @@ def process_emotions(emotion_history, current_emotion, target_mood):
 class MusicRecommendationEngine:
    def __init__(self):
        
-       # keep track of what worked before
+       # keep track of what worked before from user 
        self.training_data = []
        self.interaction_history = []
 
@@ -188,9 +194,9 @@ class MusicRecommendationEngine:
 # these are playlists we made already
 def get_playlist_dict():
    return {
-       ('exercise', 'pop', 'energetic'): 'spotify:playlist:example1',
-       ('study', 'classical', 'focus'): 'spotify:playlist:example2',
-       ('relax', 'ambient', 'calm'): 'spotify:playlist:example3',
+        ('study', 'classical', 'happy'): 'spotify:playlist:37i9dQZF1DWUoZLzF1EkPE',
+        ('work', 'rock', 'focus'): 'spotify:playlist:37i9dQZF1DX9qNs32fujYe',
+        ('exercise', 'pop', 'focus'): 'spotify:playlist:37i9dQZF1DX9qNs32fujYe',
        # we can add more later
     #    have in data_config 
    }

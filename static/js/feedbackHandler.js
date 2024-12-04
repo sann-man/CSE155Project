@@ -1,6 +1,8 @@
 // need this for checking if we have a playlist playing
 import { state } from './state.js';
 
+// user feedback managment 
+
 // this function runs when feedback buttons are clicked 
 export function submitFeedback(score) {
     // make sure we actually have a playlist to rate

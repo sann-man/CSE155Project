@@ -1,9 +1,11 @@
 
 import { state, constants } from './state.js';
 import { updateCurrentSongDisplay, updateEmotionDisplay } from './displayManager.js';
+// handles switching between playlists
 
 // this function changes to a new playlist when ur mood changes
 export async function switchToNewPlaylist(newMood) {
+
    // lets us know plkaylist is swithcing 
    console.log('Switching to new playlist with mood:', newMood);
    // get what activity / genre user picked before
@@ -35,11 +37,13 @@ export async function switchToNewPlaylist(newMood) {
            state.currentPlaylistUri = data.playlist_uri;
            // update the mood dropdown to match new playlist
            $('#mood').val(newMood);
+
            // tell user we switched playlists
            $('#message').text(`Switched to ${newMood} playlist: ${data.playlist_name}`);
            // update whats showing on screen
            updateCurrentSongDisplay();
            // remember when we changed mood
+           
            state.lastMoodChange = Date.now();
        } else {
            // couldnt find a different playlist

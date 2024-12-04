@@ -1,6 +1,9 @@
 import { state } from './state.js';
 
+// were all onscreen updates are handled 
+
 // this function updates what song is playing at the momenmt 
+
 export function updateCurrentSongDisplay() {
     // grab the current song from the server
     fetch('/current_song')
@@ -9,7 +12,9 @@ export function updateCurrentSongDisplay() {
             // check if we got a song playing
             if (data.track_name && data.artists) {
                 // put the song name and artist on the page
+
                 document.getElementById('song-info').innerText = `${data.track_name} by ${data.artists}`;
+
                 // if we got an album pic show it
                 if (data.album_image_url) {
                     document.getElementById('album-image').src = data.album_image_url;
@@ -36,11 +41,11 @@ export function updateEmotionDisplay(emotion, targetMood, showCooldown = false) 
     
     // make a new div if we dont have one yet
     // havent needed to use this anymore but fixed previous problems
-    if (!displayDiv) {
-        displayDiv = document.createElement('div');
-        displayDiv.id = 'emotion-display';
-        container.appendChild(displayDiv);
-    }
+    // if (!displayDiv) {
+    //     displayDiv = document.createElement('div');
+    //     displayDiv.id = 'emotion-display';
+    //     container.appendChild(displayDiv);
+    // }
     
     // figure out if we need to show the cooldown timer
     let cooldownInfo = '';

@@ -23,6 +23,7 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
+
     # Route for streaming video feed
     return Response(emotion_detector.generate_frames(),
                    mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -47,6 +48,7 @@ def play_music():
 @app.route('/update_emotion', methods=['POST'])
 def update_emotion():
     # handle emotion updates and playlist suggestions
+    # -> process emotions to decide if playlist should change 
     try:
         data = request.get_json()
         target_mood = data.get('current_mood', 'focus')
@@ -63,9 +65,11 @@ def update_emotion():
             'suggested_mood': suggested_mood,
             'target_mood': target_mood
         }), 200
+    
     except Exception as e:
         print(f"Error in update_emotion: {e}")
-        return jsonify({'error': str(e)}), 500
+        # 500 is error code , 200 ^ is ok/success code 
+        return jsonify({'error': str(e)}), 500 
 
 @app.route('/current_song', methods=['GET'])
 def current_song():
@@ -98,7 +102,7 @@ def handle_feedback():
             if field not in data:
                 return jsonify({'error': f'Missing {field} in request'}), 400
 
-        with lock:
+        with lock: #lock for function 
             current_emotion = emotion_detector.last_emotion
             
         spotify_handler.recommendation_engine.log_interaction(
@@ -108,7 +112,7 @@ def handle_feedback():
             mood=data['mood'],
             emotion=current_emotion,
             playlist_uri=data['playlist_uri'],
-            feedback_score=data['score']
+            feedback_score=data['score'] #1 for thumbs up ... 
         )
         
         print(f"Received feedback: {data}")

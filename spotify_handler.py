@@ -7,12 +7,13 @@ from flask import jsonify
 import random 
 
 # playing music and changing songs
-# handles all sptoify stuff 
+# handles all sptoify stuff -> playlist_manager.py
 
 class SpotifyHandler:
     def __init__(self, config):
         # set up spotify connection with our app info
         # from config 
+        # spotifyt authentication 
         self.spotify_auth = SpotifyOAuth(
             client_id=config['client_id'],
             client_secret=config['client_secret'],
@@ -21,7 +22,7 @@ class SpotifyHandler:
         )
         self.spotify = Spotify(auth_manager=self.spotify_auth)
         
-        # Initialize recommendation engine
+        # initialize recommendation engine
         initial_training_data = get_training_data()
         self.recommendation_engine = MusicRecommendationEngine()
         self.recommendation_engine.prepare_training_data(initial_training_data)
@@ -33,7 +34,7 @@ class SpotifyHandler:
         return "authentication success!"
 
     def handle_play_music(self, request):
-        # Handle playing music request
+        # handle playing music request
         try:
             activity = request.args.get('activity')
             genre = request.args.get('genre')
@@ -41,24 +42,27 @@ class SpotifyHandler:
             current_playlist = request.args.get('current_playlist')
             
             if not all([activity, genre, mood]):
-                return jsonify({'error': 'Missing required parameters'}), 400
+                return jsonify({'error': 'Missing required parameters'}), 400 #bad request 
 
+            # get playlist recommendations 
             playlists = create_playlist(self.spotify, activity, genre, mood, current_playlist)
             if not playlists:
-                return jsonify({'error': 'No suitable playlists found'}), 404
+                return jsonify({'error': 'No suitable playlists found'}), 404 #not found 
 
+            # get rid of current playlist 
             different_playlists = [p for p in playlists if p[1] != current_playlist]
             if not different_playlists:
                 return jsonify({'error': 'No different playlists available'}), 404
 
             playlist_name, playlist_uri = random.choice(different_playlists)
             
-            devices = self.spotify.devices()
+            devices = self.spotify.devices() #either web player or desktop app 
             if not devices['devices']:
                 return jsonify({'error': 'No active Spotify device found'}), 400
             
             device_id = devices['devices'][0]['id']
             
+            # start playing on sptify 
             self.spotify.start_playback(
                 device_id=device_id,
                 context_uri=playlist_uri
@@ -81,6 +85,7 @@ class SpotifyHandler:
             if current_playback and current_playback['item']:
                 track = current_playback['item']
                 return jsonify({
+                    # track specific info 
                     'track_name': track['name'],
                     'artists': ', '.join(artist['name'] for artist in track['artists']),
                     'album_image_url': track['album']['images'][0]['url'] if track['album']['images'] else None,
@@ -90,12 +95,15 @@ class SpotifyHandler:
                     'playlist_uri': current_playback.get('context', {}).get('uri')
                 })
             return jsonify({
+                # got rid of message 
                 'message': 'No song is currently playing',
                 'is_playing': False
             })
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 
+
+    # pause resume next 
     def pause_playback(self):
         try:
             self.spotify.pause_playback()
