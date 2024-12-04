@@ -11,15 +11,15 @@
         <h1>Emoticon</h1>
     </header>
     <main>
-
         <select id="activity">
+            <option value="" disabled selected>Activity</option>
             <option value="study">Study</option>
             <option value="work">Work</option>
-            <!-- <option value="exercise">Exercise</option> -->
             <option value="relax">Relax</option>
         </select>
         
         <select id="genre">
+            <option value="" disabled selected>Genre</option>
             <option value="classical">Classical</option>
             <option value="pop">Pop</option>
             <option value="rock">Rock</option>
@@ -29,19 +29,21 @@
         </select>
         
         <select id="mood">
+            <option value="" disabled selected>Mood</option>
             <option value="focus">Focus</option>
             <option value="happy">Happy</option>
             <option value="energetic">Energetic</option>
             <option value="calm">Calm</option>
         </select>
     </main>
+    
 
         <section class="action-container">
             <button id="playButton">Play Music</button>
-            <div id="message"></div>
+            <!-- <div id="message"></div> -->
         </section>
         <section class="emotion-detection-container">
-            <h2>Emotion Detection</h2>
+            <!-- <h2>Emotion Detection</h2> -->
             <div class="video-container">
                 <img src="{{ url_for('video_feed') }}" alt="Emotion Detection">
             </div>

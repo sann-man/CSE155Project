@@ -53,13 +53,13 @@ export function updateEmotionDisplay(emotion, targetMood, showCooldown = false) 
     }
     
     // put all the emotion info on the screen
-    displayDiv.innerHTML = `
-        <h3>Current State</h3>
-        <p>Detected Emotion: ${emotion}</p>
-        <p>Target Mood: ${targetMood}</p>
-        <p>Last Updated: ${new Date().toLocaleTimeString()}</p>
-        ${cooldownInfo}
-    `;
+    // displayDiv.innerHTML = `
+    //     <h3>Current State</h3>
+    //     <p>Detected Emotion: ${emotion}</p>
+    //     <p>Target Mood: ${targetMood}</p>
+    //     <p>Last Updated: ${new Date().toLocaleTimeString()}</p>
+    //     ${cooldownInfo}
+    // `;
 }
 
 // this shows or hides the feedback buttons 
